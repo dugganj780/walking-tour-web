@@ -61,7 +61,7 @@ export default function LoginForm() {
       setError("");
       setLoading(true);
       await login(email.current.value, password.current.value);
-      navigate("/testpage");
+      navigate("/tourlist");
     } catch {
       setError("Failed to log in");
     }

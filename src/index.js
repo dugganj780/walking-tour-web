@@ -6,6 +6,8 @@ import HomePage from "./pages/homePage";
 import { AuthProvider } from "./contexts/AuthContext";
 import TestPage from "./pages/testLanding";
 import PrivateRoute from "./components/privateRoute";
+import NavigationDrawer from "./components/navigationDrawer";
+import TourListPage from "./pages/tourListPage";
 
 const App = () => {
   return (
@@ -17,6 +19,14 @@ const App = () => {
             element={
               <PrivateRoute>
                 <TestPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/tourlist"
+            element={
+              <PrivateRoute>
+                <TourListPage />
               </PrivateRoute>
             }
           />
