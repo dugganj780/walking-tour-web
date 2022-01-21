@@ -2,7 +2,7 @@ import React from "react";
 import PageTemplate from "../components/pageTemplateList";
 import Image from "../images/home_image.jpg";
 
-const TourListPage = (props) => {
+const PoiListPage = (props) => {
   /*
   const { data, error, isLoading, isError } = useQuery('discover', getMovies)
 
@@ -71,7 +71,7 @@ const TourListPage = (props) => {
     },
   ];
 
-  return <PageTemplate title="My Tours" props={tours} />;
+  return <PageTemplate title="My Tours" props={pois} />;
 };
 
-export default TourListPage;
+export default PoiListPage;

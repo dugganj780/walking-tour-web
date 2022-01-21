@@ -4,11 +4,14 @@ import Typography from "@mui/material/Typography";
 import { Button } from "@mui/material";
 import { useAuth } from "../contexts/AuthContext";
 import TourList from "../components/tourList";
+import MapView from "../components/mapView";
+import PageTemplate from "../components/pageTemplateDetails";
+import Image from "../images/home_image.jpg";
 
 //import '../App.css';
 //import '../index.css';
 
-const TestPage = () => {
+const TestPage = (props) => {
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -31,13 +34,7 @@ const TestPage = () => {
     navigate("/");
   }
 
-  return (
-    <>
-      <TourList props={tours} />
-      <Typography variant="h4">You've Logged In</Typography>
-      <Button onClick={handleLogout}>Logout</Button>
-    </>
-  );
+  return <PageTemplate title="Test" props={tours} />;
 };
 
 export default TestPage;

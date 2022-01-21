@@ -8,6 +8,8 @@ import TestPage from "./pages/testLanding";
 import PrivateRoute from "./components/privateRoute";
 import NavigationDrawer from "./components/navigationDrawer";
 import TourListPage from "./pages/tourListPage";
+import PoiListPage from "./pages/poiListPage";
+import CreateTourPage from "./pages/createTourPage";
 
 const App = () => {
   return (
@@ -27,6 +29,22 @@ const App = () => {
             element={
               <PrivateRoute>
                 <TourListPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/poilist"
+            element={
+              <PrivateRoute>
+                <PoiListPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/createtour"
+            element={
+              <PrivateRoute>
+                <CreateTourPage />
               </PrivateRoute>
             }
           />

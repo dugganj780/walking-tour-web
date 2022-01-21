@@ -17,6 +17,11 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
+import FormatListBulletedOutlinedIcon from "@mui/icons-material/FormatListBulletedOutlined";
+import AddLocationAltOutlinedIcon from "@mui/icons-material/AddLocationAltOutlined";
+import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import LocationCityOutlinedIcon from "@mui/icons-material/LocationCityOutlined";
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -47,6 +52,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 export default function NavigationDrawer(title) {
+  const navigate = useNavigate();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -57,6 +63,34 @@ export default function NavigationDrawer(title) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const mainNavigationList = [
+    {
+      text: "My Tours",
+      icon: <FormatListBulletedOutlinedIcon />,
+      onClick: () => navigate("/tourlist"),
+    },
+    {
+      text: "Create Tour",
+      icon: <MapOutlinedIcon />,
+      onClick: () => navigate("/createtour"),
+    },
+    {
+      text: "My Places",
+      icon: <LocationCityOutlinedIcon />,
+      onClick: () => navigate("/poilist"),
+    },
+    {
+      text: "Create Place",
+      icon: <AddLocationAltOutlinedIcon />,
+      onClick: () => navigate("/poilist"),
+    },
+    {
+      text: "Test Page",
+      icon: <AddLocationAltOutlinedIcon />,
+      onClick: () => navigate("/testpage"),
+    },
+  ];
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -101,18 +135,20 @@ export default function NavigationDrawer(title) {
         </DrawerHeader>
         <Divider />
         <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+          {mainNavigationList.map((item, index) => {
+            const { text, icon, onClick } = item;
+
+            return (
+              <ListItem button key={text} onClick={onClick}>
+                {icon && <ListItemIcon>{icon}</ListItemIcon>}
+                <ListItemText primary={text} />
+              </ListItem>
+            );
+          })}
         </List>
         <Divider />
         <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
+          {["My Account", "Logout"].map((text, index) => (
             <ListItem button key={text}>
               <ListItemIcon>
                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
