@@ -71,7 +71,7 @@ const PoiListPage = (props) => {
     },
   ];
 
-  return <PageTemplate title="My Tours" props={pois} />;
+  return <PageTemplate title="My Destinations" props={pois} />;
 };
 
 export default PoiListPage;

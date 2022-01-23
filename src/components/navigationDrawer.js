@@ -20,8 +20,10 @@ import MailIcon from "@mui/icons-material/Mail";
 import FormatListBulletedOutlinedIcon from "@mui/icons-material/FormatListBulletedOutlined";
 import AddLocationAltOutlinedIcon from "@mui/icons-material/AddLocationAltOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import LocationCityOutlinedIcon from "@mui/icons-material/LocationCityOutlined";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 const drawerWidth = 240;
 
@@ -52,9 +54,15 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 export default function NavigationDrawer(title) {
+  const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+
+  async function handleLogout() {
+    await logout();
+    navigate("/");
+  }
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -89,6 +97,14 @@ export default function NavigationDrawer(title) {
       text: "Test Page",
       icon: <AddLocationAltOutlinedIcon />,
       onClick: () => navigate("/testpage"),
+    },
+  ];
+
+  const accountNavigationList = [
+    {
+      text: "Logout",
+      icon: <LogoutOutlinedIcon />,
+      onClick: () => handleLogout(),
     },
   ];
 
@@ -148,14 +164,16 @@ export default function NavigationDrawer(title) {
         </List>
         <Divider />
         <List>
-          {["My Account", "Logout"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+          {accountNavigationList.map((item, index) => {
+            const { text, icon, onClick } = item;
+
+            return (
+              <ListItem button key={text} onClick={onClick}>
+                {icon && <ListItemIcon>{icon}</ListItemIcon>}
+                <ListItemText primary={text} />
+              </ListItem>
+            );
+          })}
         </List>
       </Drawer>
     </Box>

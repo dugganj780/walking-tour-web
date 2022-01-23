@@ -11,7 +11,7 @@ import Image from "../images/home_image.jpg";
 //import '../App.css';
 //import '../index.css';
 
-const TestPage = (props) => {
+const PoiDetailsPage = (props) => {
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -29,6 +29,19 @@ const TestPage = (props) => {
       image: Image,
     },
   ];
+
+  const singleTour = {
+    id: "2",
+    title: "UCD Tour",
+    owner: "James Cuggan",
+    ownerid: "user2",
+    image: Image,
+    city: "Dublin",
+    country: "Ireland",
+    orienteering: false,
+    category: "Historical",
+    pois: [singlePoi1, singlePoi2],
+  };
 
   const singlePoi1 = {
     uid: "poi2",
@@ -56,25 +69,12 @@ const TestPage = (props) => {
     recording: "",
   };
 
-  const singleTour = {
-    uid: "2",
-    title: "UCD Tour",
-    owner: "James Cuggan",
-    ownerid: "user2",
-    image: Image,
-    city: "Dublin",
-    country: "Ireland",
-    orienteering: false,
-    category: "Historical",
-    pois: [singlePoi1, singlePoi2],
-  };
-
   async function handleLogout() {
     await logout();
     navigate("/");
   }
 
-  return <PageTemplate title="Test" props={singleTour} />;
+  return <PageTemplate title="Destination Details" props={singlePoi1} />;
 };
 
-export default TestPage;
+export default PoiDetailsPage;

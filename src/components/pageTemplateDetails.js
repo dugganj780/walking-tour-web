@@ -1,18 +1,22 @@
 import React, { useState } from "react";
 import NavigationDrawer from "./navigationDrawer";
-import makeStyles from "@mui/styles/makeStyles";
-import TourList from "./tourList";
 import Grid from "@mui/material/Grid";
-import MapView from "./mapView";
-
-const useStyles = makeStyles({
-  root: {
-    spacing: 2,
-  },
-});
+import MapViewPoi from "./mapViewPoi";
+import MapViewTour from "./mapViewTour";
+import DetailsCard from "./detailsCard";
 
 function DetailsPageTemplate({ props, title, action }) {
-  const classes = useStyles();
+  const { poi } = props;
+  console.log(props);
+
+  function UsableMap(props) {
+    console.log(props);
+    if (poi) {
+      return <MapViewPoi props={props} />;
+    } else {
+      return <MapViewTour props={props} />;
+    }
+  }
   //const [nameFilter, setNameFilter] = useState("");
   //const [genreFilter, setGenreFilter] = useState("0");
   //const genreId = Number(genreFilter);
@@ -20,12 +24,12 @@ function DetailsPageTemplate({ props, title, action }) {
   return (
     <>
       <NavigationDrawer title={title} />
-      <Grid container className={classes.root}>
-        <Grid item xs={12}>
-          <MapView />
+      <Grid container spacing={2}>
+        <Grid item xs={6} spacing={2}>
+          <UsableMap props={props} />
         </Grid>
-        <Grid item container spacing={5}>
-          <TourList action={action} props={props} />
+        <Grid item xs={6}>
+          <DetailsCard props={props} action={action} />
         </Grid>
       </Grid>
     </>
