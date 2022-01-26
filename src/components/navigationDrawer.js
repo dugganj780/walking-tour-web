@@ -91,7 +91,7 @@ export default function NavigationDrawer(title) {
     {
       text: "Create Place",
       icon: <AddLocationAltOutlinedIcon />,
-      onClick: () => navigate("/poilist"),
+      onClick: () => navigate("/createpoi"),
     },
     {
       text: "Test Page",

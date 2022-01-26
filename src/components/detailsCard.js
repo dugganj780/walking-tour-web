@@ -19,7 +19,8 @@ const useStyles = makeStyles({
 function DetailsCard(props) {
   console.log(props);
   const classes = useStyles();
-  const { title, owner, city, country, image, lat, lng, poi } = props.props;
+  const { uid, title, owner, city, country, image, lat, lng, poi } =
+    props.props;
   const navigate = useNavigate();
 
   function PoiButtons(props) {
@@ -68,7 +69,7 @@ function DetailsCard(props) {
   }
 
   async function handleTourDetailsClick() {
-    navigate("/poilist");
+    navigate(`/poilist/${uid}`);
   }
 
   return (

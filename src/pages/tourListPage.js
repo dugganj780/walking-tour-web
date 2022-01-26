@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PageTemplate from "../components/pageTemplateList";
 import Image from "../images/home_image.jpg";
+import { db } from "../firebase";
 
 const TourListPage = (props) => {
   /*
@@ -19,7 +20,7 @@ const TourListPage = (props) => {
   const favorites = movies.filter(m => m.favorite)
   localStorage.setItem('favorites', JSON.stringify(favorites))
   */
-
+  /*
   const tours = [
     {
       id: "1",
@@ -70,6 +71,21 @@ const TourListPage = (props) => {
       recording: "",
     },
   ];
+  */
+  const [tours, setTours] = useState([]);
+
+  useEffect(() => {
+    const tourRef = db.ref("tours");
+    tourRef.on("value", (snapshot) => {
+      const tour = snapshot.val();
+      const tours = [];
+      for (let id in tour) {
+        tours.push(tour[id]);
+      }
+      console.log(tours);
+      setTours(tours);
+    });
+  }, []);
 
   return <PageTemplate title="My Tours" props={tours} />;
 };

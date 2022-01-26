@@ -8,8 +8,7 @@ import { makeStyles } from "@mui/styles";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
-import { db } from "../firebase";
-import { set, ref } from "firebase/database";
+import { db, auth } from "../firebase";
 import { v4 as uuidv4 } from "uuid";
 
 const useStyles = makeStyles({
@@ -32,15 +31,15 @@ const useStyles = makeStyles({
   },
 });
 
-export default function CreateTourForm() {
+export default function CreatePoiForm() {
   const [title, setTitle] = useState("");
   const [city, setCity] = useState("");
-  const [country, setCountry] = useState("");
   const [owner, setOwner] = useState("");
+  const [lat, setLat] = useState(0.0);
+  const [lng, setLng] = useState(0.0);
   const uid = uuidv4();
 
-  let pois = [];
-  const [tours, setTours] = useState([]);
+  const [pois, setPois] = useState([]);
 
   //const navigate = useNavigate();
   const classes = useStyles();
@@ -49,53 +48,32 @@ export default function CreateTourForm() {
     e.preventDefault();
 
     console.log(title);
-    const tour = {
+    const poi = {
       uid: uid,
+      poi: true,
       title: title,
-      city: city,
-      country: country,
       owner: owner,
-      pois: pois,
+      ownerid: auth.currentUser.uid,
+      city: city,
+      lat: lat,
+      lng: lng,
+      image: "",
+      recording: "",
     };
-    setTours((tours) => {
-      return [...tours, tour];
+    setPois((pois) => {
+      return [...pois, poi];
     });
 
-    /*
-    const tourRef = db.ref("tours");
-    tourRef.push(tour);
-    */
+    const poiRef = db.ref("pois");
+    poiRef.push(poi);
 
-    set(ref(db, `/tours/${uid}`), {
-      uid: uid,
-      title: title,
-      city: city,
-      country: country,
-      owner: owner,
-      pois: pois,
-    });
-
-    console.log(tours);
+    console.log(poi);
     setTitle("");
     setCity("");
-    setCountry("");
     setOwner("");
+    setLat(0.0);
+    setLng(0.0);
   }
-
-  /*
-  async function handleLoginSubmit(e) {
-    e.preventDefault();
-    try {
-      setError("");
-      setLoading(true);
-      await login(email.current.value, password.current.value);
-      navigate("/tourlist");
-    } catch {
-      setError("Failed to log in");
-    }
-    setLoading(false);
-  }
-  */
 
   return (
     <Paper className={classes.paper}>
@@ -119,14 +97,6 @@ export default function CreateTourForm() {
           fullWidth
         />
         <TextField
-          id="country"
-          label="Country"
-          variant="standard"
-          value={country}
-          onChange={(e) => setCountry(e.target.value)}
-          fullWidth
-        />
-        <TextField
           id="owner"
           label="Tour Guide"
           variant="standard"
@@ -134,8 +104,24 @@ export default function CreateTourForm() {
           onChange={(e) => setOwner(e.target.value)}
           fullWidth
         />
+        <TextField
+          id="lat"
+          label="Latittude"
+          variant="standard"
+          value={lat}
+          onChange={(e) => setLat(e.target.value)}
+          fullWidth
+        />
+        <TextField
+          id="lng"
+          label="Longitude"
+          variant="standard"
+          value={lng}
+          onChange={(e) => setLng(e.target.value)}
+          fullWidth
+        />
         <Button variant="contained" onClick={handleCreateTourClick} fullWidth>
-          Create Tour
+          Create Destination
         </Button>
         <Button variant="contained" fullWidth>
           Cancel

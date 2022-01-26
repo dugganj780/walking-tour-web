@@ -4,6 +4,7 @@ import { Icon } from "leaflet";
 import Card from "@mui/material/Card";
 import React, { useState } from "react";
 import MediaPlayer from "./mediaPlayer";
+import { Typography } from "@mui/material";
 
 const useStyles = makeStyles({
   map: {
@@ -22,9 +23,8 @@ function MapViewTour(props) {
   const classes = useStyles();
   const [activePoi, setActivePoi] = useState(null);
 
-  function handleClick(e) {
-    e.preventDefault();
-    setActivePoi(props.props);
+  function handleClick(props) {
+    setActivePoi(props);
     console.log(activePoi);
   }
 
@@ -48,28 +48,29 @@ function MapViewTour(props) {
                 position={[poi.lat, poi.lng]}
                 eventHandlers={{
                   click: (e) => {
+                    console.log(poi);
                     console.log("marker clicked", e);
-                    setActivePoi(poi);
+                    handleClick(poi);
                     console.log(activePoi);
                   },
                 }}
               />
               ;
-              {activePoi && (
-                <Popup
-                  position={[poi.lat, poi.lng]}
-                  onClose={() => {
-                    setActivePoi(null);
-                  }}
-                >
-                  <>
-                    <MediaPlayer props={props} />
-                  </>
-                </Popup>
-              )}
             </>
           );
         })}
+        {activePoi && (
+          <Popup
+            position={[activePoi.lat, activePoi.lng]}
+            onClose={() => {
+              setActivePoi(null);
+            }}
+          >
+            <>
+              <Typography>{activePoi.title}</Typography>
+            </>
+          </Popup>
+        )}
       </MapContainer>
     </Card>
   );

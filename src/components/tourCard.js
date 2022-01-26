@@ -1,23 +1,45 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { db } from "../firebase";
 //import Image from "../../public/images/home_image";
 
 export default function TourCard(props) {
-  const { title, owner, city, country, image, poi } = props.tour;
+  const { uid, title, owner, city, country, image, poi } = props.tour;
   const navigate = useNavigate();
+  const activeTourId = useParams();
+  const [activeTour, setActiveTour] = useState(null);
+
+  useEffect(() => {
+    const tourRef = db.ref("tours");
+    tourRef.on("value", (snap) => {
+      const tours = snap.val();
+      if (tours !== null) {
+        Object.keys(tours).forEach((uid) => {
+          // The ID is the key
+          console.log(uid);
+          // The Object is foo[key]
+          console.log(tours[uid]);
+          setActiveTour(tours[uid]);
+          console.log(activeTour);
+        });
+      }
+    });
+  }, []);
 
   function PoiButtons(props) {
     return (
       <>
-        <Button size="small">Add to Tour</Button>
+        {activeTour && <Button size="small">Add to Tour</Button>}
         <Button size="small">View Details</Button>
-        <Button size="small">Delete</Button>
+        <Button size="small" onClick={onDelete}>
+          Delete
+        </Button>
       </>
     );
   }
@@ -25,10 +47,12 @@ export default function TourCard(props) {
   function TourButtons(props) {
     return (
       <>
-        <Button size="small" onClick={handleTourDetailsClick}>
+        <Button size="small" onClick={() => handleTourDetailsClick()}>
           View Tour
         </Button>
-        <Button size="small">Delete</Button>
+        <Button size="small" onClick={onDelete}>
+          Delete
+        </Button>
       </>
     );
   }
@@ -41,8 +65,14 @@ export default function TourCard(props) {
     }
   }
 
-  async function handleTourDetailsClick() {
-    navigate("/poilist");
+  function onDelete(id) {
+    if (window.confirm("Are you sure you want to Delete this?")) {
+      console.log(id);
+    }
+  }
+
+  async function handleTourDetailsClick(props) {
+    navigate(`/tour/${uid}`);
   }
 
   return (

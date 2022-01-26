@@ -4,17 +4,22 @@ import Grid from "@mui/material/Grid";
 import MapViewPoi from "./mapViewPoi";
 import MapViewTour from "./mapViewTour";
 import DetailsCard from "./detailsCard";
+import NoPoisCard from "./noPoisMapView";
 
 function DetailsPageTemplate({ props, title, action }) {
-  const { poi } = props;
-  console.log(props);
+  const { poi, pois } = props;
+  //console.log(props);
 
   function UsableMap(props) {
     console.log(props);
     if (poi) {
       return <MapViewPoi props={props} />;
     } else {
-      return <MapViewTour props={props} />;
+      if (pois) {
+        return <MapViewTour props={props} />;
+      } else {
+        return <NoPoisCard props={props} />;
+      }
     }
   }
   //const [nameFilter, setNameFilter] = useState("");

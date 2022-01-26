@@ -10,6 +10,9 @@ import NavigationDrawer from "./components/navigationDrawer";
 import TourListPage from "./pages/tourListPage";
 import PoiListPage from "./pages/poiListPage";
 import CreateTourPage from "./pages/createTourPage";
+import CreatePoiPage from "./pages/createPoiPage";
+import TourDetailsPage from "./pages/tourDetailsPage";
+import PoiDetailsPage from "./pages/poiDetailsPage";
 
 const App = () => {
   return (
@@ -33,7 +36,23 @@ const App = () => {
             }
           />
           <Route
+            path="/tour/:uid"
+            element={
+              <PrivateRoute>
+                <TourDetailsPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path="/poilist"
+            element={
+              <PrivateRoute>
+                <PoiListPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/poilist/:uid"
             element={
               <PrivateRoute>
                 <PoiListPage />
@@ -45,6 +64,14 @@ const App = () => {
             element={
               <PrivateRoute>
                 <CreateTourPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/createpoi"
+            element={
+              <PrivateRoute>
+                <CreatePoiPage />
               </PrivateRoute>
             }
           />
