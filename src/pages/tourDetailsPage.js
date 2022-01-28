@@ -13,7 +13,7 @@ import { db } from "../firebase";
 //import '../index.css';
 
 const TourDetailsPage = (props) => {
-  const uid = useParams();
+  const { tourId } = useParams();
   const [tour, setTour] = useState(null);
 
   //const fooRef = rootRef.child("foo");
@@ -24,11 +24,13 @@ const TourDetailsPage = (props) => {
       const tours = snap.val();
       if (tours !== null) {
         Object.keys(tours).forEach((uid) => {
-          // The ID is the key
-          console.log(uid);
-          // The Object is foo[key]
-          console.log(tours[uid]);
-          setTour(tours[uid]);
+          if (uid === tourId) {
+            // The ID is the key
+            console.log(uid);
+            // The Object is foo[key]
+            console.log(tours[uid]);
+            setTour(tours[uid]);
+          }
         });
       }
     });

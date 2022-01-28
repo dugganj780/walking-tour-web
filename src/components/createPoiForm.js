@@ -8,7 +8,10 @@ import { makeStyles } from "@mui/styles";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
-import { db, auth } from "../firebase";
+import { db, auth, storage } from "../firebase";
+import { set, ref } from "firebase/database";
+import { ref as sRef } from "firebase/storage";
+import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 
 const useStyles = makeStyles({
@@ -37,12 +40,76 @@ export default function CreatePoiForm() {
   const [owner, setOwner] = useState("");
   const [lat, setLat] = useState(0.0);
   const [lng, setLng] = useState(0.0);
+  const [image, setImage] = useState("");
+  const [recording, setRecording] = useState("");
   const uid = uuidv4();
 
   const [pois, setPois] = useState([]);
 
   //const navigate = useNavigate();
   const classes = useStyles();
+
+  const uploadImageHandler = (e) => {
+    e.preventDefault();
+    const file = e.target[0].files[0];
+    uploadImageFile(file);
+  };
+
+  const uploadAudioHandler = (e) => {
+    e.preventDefault();
+    const file = e.target[0].files[0];
+    uploadAudioFile(file);
+  };
+
+  function uploadImageFile(file) {
+    if (!file) return;
+
+    const storageRef = sRef(storage, `poiImages/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const prog = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+
+        //setProgress(prog);
+      },
+      (err) => console.log(err),
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+          console.log(url);
+          setImage(url);
+        });
+      }
+    );
+  }
+
+  function uploadAudioFile(file) {
+    if (!file) return;
+
+    const storageRef = sRef(storage, `poiAudio/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const prog = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+
+        //setProgress(prog);
+      },
+      (err) => console.log(err),
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+          console.log(url);
+          setRecording(url);
+        });
+      }
+    );
+  }
 
   async function handleCreateTourClick(e) {
     e.preventDefault();
@@ -57,15 +124,25 @@ export default function CreatePoiForm() {
       city: city,
       lat: lat,
       lng: lng,
-      image: "",
-      recording: "",
+      image: image,
+      recording: recording,
     };
     setPois((pois) => {
       return [...pois, poi];
     });
 
-    const poiRef = db.ref("pois");
-    poiRef.push(poi);
+    set(ref(db, `/pois/${uid}`), {
+      uid: uid,
+      poi: true,
+      title: title,
+      owner: owner,
+      ownerid: auth.currentUser.uid,
+      city: city,
+      lat: lat,
+      lng: lng,
+      image: image,
+      recording: recording,
+    });
 
     console.log(poi);
     setTitle("");
@@ -120,6 +197,14 @@ export default function CreatePoiForm() {
           onChange={(e) => setLng(e.target.value)}
           fullWidth
         />
+        <form onSubmit={uploadImageHandler}>
+          <input type="file" className="input" />
+          <button type="submit">Upload Image</button>
+        </form>
+        <form onSubmit={uploadAudioHandler}>
+          <input type="file" className="input" />
+          <button type="submit">Upload Recording</button>
+        </form>
         <Button variant="contained" onClick={handleCreateTourClick} fullWidth>
           Create Destination
         </Button>

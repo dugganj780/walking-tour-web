@@ -16,27 +16,31 @@ export default function TourCard(props) {
   const [activeTour, setActiveTour] = useState(null);
 
   useEffect(() => {
-    const tourRef = db.ref("tours");
-    tourRef.on("value", (snap) => {
-      const tours = snap.val();
-      if (tours !== null) {
-        Object.keys(tours).forEach((uid) => {
-          // The ID is the key
-          console.log(uid);
-          // The Object is foo[key]
-          console.log(tours[uid]);
-          setActiveTour(tours[uid]);
-          console.log(activeTour);
-        });
-      }
-    });
+    if (!poi) {
+      const tourRef = db.ref("tours");
+      tourRef.on("value", (snap) => {
+        const tours = snap.val();
+        if (tours !== null) {
+          Object.keys(tours).forEach((uid) => {
+            // The ID is the key
+            console.log(uid);
+            // The Object is foo[key]
+            console.log(tours[uid]);
+            setActiveTour(tours[uid]);
+            console.log(activeTour);
+          });
+        }
+      });
+    }
   }, []);
 
   function PoiButtons(props) {
     return (
       <>
         {activeTour && <Button size="small">Add to Tour</Button>}
-        <Button size="small">View Details</Button>
+        <Button size="small" onClick={() => handlePoiDetailsClick()}>
+          View Details
+        </Button>
         <Button size="small" onClick={onDelete}>
           Delete
         </Button>
@@ -73,6 +77,10 @@ export default function TourCard(props) {
 
   async function handleTourDetailsClick(props) {
     navigate(`/tour/${uid}`);
+  }
+
+  async function handlePoiDetailsClick(props) {
+    navigate(`/poi/${uid}`);
   }
 
   return (

@@ -36,10 +36,18 @@ const App = () => {
             }
           />
           <Route
-            path="/tour/:uid"
+            path="/tour/:tourId"
             element={
               <PrivateRoute>
                 <TourDetailsPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/poi/:poiId"
+            element={
+              <PrivateRoute>
+                <PoiDetailsPage />
               </PrivateRoute>
             }
           />
@@ -52,7 +60,7 @@ const App = () => {
             }
           />
           <Route
-            path="/poilist/:uid"
+            path="/poilist/:tourId"
             element={
               <PrivateRoute>
                 <PoiListPage />

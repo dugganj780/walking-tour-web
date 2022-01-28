@@ -8,9 +8,11 @@ import { makeStyles } from "@mui/styles";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
-import { db } from "../firebase";
+import { db, storage } from "../firebase";
 import { set, ref } from "firebase/database";
+import { ref as sRef } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
+import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
 const useStyles = makeStyles({
   card: {
@@ -37,6 +39,8 @@ export default function CreateTourForm() {
   const [city, setCity] = useState("");
   const [country, setCountry] = useState("");
   const [owner, setOwner] = useState("");
+  const [progress, setProgress] = useState(0);
+  const [image, setImage] = useState("");
   const uid = uuidv4();
 
   let pois = [];
@@ -45,18 +49,51 @@ export default function CreateTourForm() {
   //const navigate = useNavigate();
   const classes = useStyles();
 
+  const uploadHandler = (e) => {
+    e.preventDefault();
+    const file = e.target[0].files[0];
+    uploadFiles(file);
+  };
+
+  function uploadFiles(file) {
+    if (!file) return;
+
+    const storageRef = sRef(storage, `tourImages/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const prog = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+
+        setProgress(prog);
+      },
+      (err) => console.log(err),
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+          console.log(url);
+          setImage(url);
+        });
+      }
+    );
+  }
+
   async function handleCreateTourClick(e) {
     e.preventDefault();
 
-    console.log(title);
     const tour = {
       uid: uid,
       title: title,
       city: city,
       country: country,
       owner: owner,
+      image: image,
       pois: pois,
     };
+    console.log(tour);
+    console.log(image);
     setTours((tours) => {
       return [...tours, tour];
     });
@@ -72,10 +109,11 @@ export default function CreateTourForm() {
       city: city,
       country: country,
       owner: owner,
+      image: image,
       pois: pois,
     });
 
-    console.log(tours);
+    setImage("");
     setTitle("");
     setCity("");
     setCountry("");
@@ -140,6 +178,10 @@ export default function CreateTourForm() {
         <Button variant="contained" fullWidth>
           Cancel
         </Button>
+        <form onSubmit={uploadHandler}>
+          <input type="file" className="input" />
+          <button type="submit">Upload Image</button>
+        </form>
       </Stack>
     </Paper>
   );
