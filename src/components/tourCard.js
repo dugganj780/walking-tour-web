@@ -12,22 +12,25 @@ import { db } from "../firebase";
 export default function TourCard(props) {
   const { uid, title, owner, city, country, image, poi } = props.tour;
   const navigate = useNavigate();
-  const activeTourId = useParams();
+  const { tourId } = useParams();
   const [activeTour, setActiveTour] = useState(null);
 
   useEffect(() => {
-    if (!poi) {
+    console.log(activeTour);
+    if (!activeTour) {
       const tourRef = db.ref("tours");
       tourRef.on("value", (snap) => {
         const tours = snap.val();
         if (tours !== null) {
           Object.keys(tours).forEach((uid) => {
-            // The ID is the key
-            console.log(uid);
-            // The Object is foo[key]
-            console.log(tours[uid]);
-            setActiveTour(tours[uid]);
-            console.log(activeTour);
+            if (uid === tourId) {
+              // The ID is the key
+              console.log(uid);
+              // The Object is foo[key]
+              console.log(tours[uid]);
+              setActiveTour(tours[uid]);
+              console.log(activeTour);
+            }
           });
         }
       });
