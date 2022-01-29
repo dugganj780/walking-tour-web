@@ -18,15 +18,16 @@ export default function MediaPlayer(props) {
   const [isPlaying, setIsPlaying] = useState(false);
   const theme = useTheme();
   const player = useRef();
-  const audio = player.current;
 
   const playAudio = () => {
+    const audio = player.current;
     setIsPlaying(true);
     audio.volume = 1;
     audio.play();
   };
 
   const pauseAudio = () => {
+    const audio = player.current;
     setIsPlaying(false);
     audio.pause();
   };

@@ -27,6 +27,9 @@ function DetailsCard(props) {
     return (
       <>
         <Button variant="outlined">Add to Tour</Button>
+        <Button variant="outlined" onClick={() => navigate(-1)}>
+          Back
+        </Button>
         <Button variant="outlined">Delete</Button>
       </>
     );

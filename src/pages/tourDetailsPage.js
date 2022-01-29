@@ -102,7 +102,7 @@ const TourDetailsPage = (props) => {
   }
 */
 
-  return <>{tour && <PageTemplate title={"Test"} props={tour} />};</>;
+  return <>{tour && <PageTemplate title={tour.title} props={tour} />};</>;
 };
 
 export default TourDetailsPage;

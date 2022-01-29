@@ -2,10 +2,12 @@ import { makeStyles } from "@mui/styles";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { Icon } from "leaflet";
 import Card from "@mui/material/Card";
+import Button from "@mui/material/Button";
 import React, { useState, useEffect } from "react";
 import MediaPlayer from "./mediaPlayer";
 import { Typography } from "@mui/material";
 import { db } from "../firebase";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles({
   map: {
@@ -24,6 +26,7 @@ function MapViewTour(props) {
   const classes = useStyles();
   const [activePoi, setActivePoi] = useState(null);
   const [foundPois, setFoundPois] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getPois = async () => {
@@ -97,6 +100,12 @@ function MapViewTour(props) {
             >
               <>
                 <Typography>{activePoi.title}</Typography>
+                <Button
+                  size="small"
+                  onClick={() => navigate(`/poi/${activePoi.uid}`)}
+                >
+                  Go to Destination
+                </Button>
               </>
             </Popup>
           )}
