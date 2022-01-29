@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useNavigate, useParams } from "react-router-dom";
 import { db } from "../firebase";
+import { set, ref } from "firebase/database";
 //import Image from "../../public/images/home_image";
 
 export default function TourCard(props) {
@@ -14,6 +15,7 @@ export default function TourCard(props) {
   const navigate = useNavigate();
   const { tourId } = useParams();
   const [activeTour, setActiveTour] = useState(null);
+  const pois = [];
 
   useEffect(() => {
     console.log(activeTour);
@@ -40,7 +42,11 @@ export default function TourCard(props) {
   function PoiButtons(props) {
     return (
       <>
-        {activeTour && <Button size="small">Add to Tour</Button>}
+        {activeTour && (
+          <Button size="small" onClick={() => handleAddPoi()}>
+            Add to Tour
+          </Button>
+        )}
         <Button size="small" onClick={() => handlePoiDetailsClick()}>
           View Details
         </Button>
@@ -86,8 +92,57 @@ export default function TourCard(props) {
     navigate(`/poi/${uid}`);
   }
 
+  function handleAddPoi(props) {
+    const poiUid = uid;
+    console.log(poiUid);
+
+    const tourRef = db.ref("tours");
+    tourRef.once("value", (snap) => {
+      const tours = snap.val();
+      if (tours !== null) {
+        Object.keys(tours).forEach((uid) => {
+          if (uid === tourId) {
+            // The ID is the key
+            console.log(uid);
+            // The Object is foo[key]
+            console.log(tours[uid]);
+            //const tourPoiRef = db.ref(`tours/${uid}/pois`);
+            set(ref(db, `tours/${uid}/pois/${poiUid}`), { poiUid });
+          }
+        });
+      }
+    });
+  }
+
+  async function handleUpdatePois() {
+    const tourRef = db.ref("tours");
+    tourRef.on("value", (snap) => {
+      const tours = snap.val();
+      if (tours !== null) {
+        Object.keys(tours).forEach((uid) => {
+          if (uid === tourId) {
+            // The ID is the key
+            console.log(uid);
+            // The Object is foo[key]
+            console.log(tours[uid]);
+            set(ref(db, `/tours/${uid}`), {
+              uid: activeTour.uid,
+              title: activeTour.title,
+              city: activeTour.city,
+              country: activeTour.country,
+              owner: activeTour.owner,
+              image: activeTour.image,
+              pois: pois,
+            });
+          }
+        });
+      }
+    });
+    navigate("/tourlist");
+  }
+
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card key={uid} sx={{ maxWidth: 345 }}>
       <CardMedia component="img" height="140" image={image} alt="tour image" />
       <CardContent>
         <Typography gutterBottom variant="h6" component="div">
@@ -102,6 +157,7 @@ export default function TourCard(props) {
       </CardContent>
       <CardActions>
         <UsableButtons />
+        <Button onClick={() => handleUpdatePois()}> Finish </Button>
       </CardActions>
     </Card>
   );
