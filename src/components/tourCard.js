@@ -42,17 +42,22 @@ export default function TourCard(props) {
   function PoiButtons(props) {
     return (
       <>
-        {activeTour && (
-          <Button size="small" onClick={() => handleAddPoi()}>
-            Add to Tour
-          </Button>
-        )}
         <Button size="small" onClick={() => handlePoiDetailsClick()}>
           View Details
         </Button>
-        <Button size="small" onClick={onDelete}>
-          Delete
-        </Button>
+        {!activeTour && (
+          <Button size="small" onClick={onDelete}>
+            Delete
+          </Button>
+        )}
+        {activeTour && (
+          <>
+            <Button size="small" onClick={() => handleAddPoi()}>
+              Add to Tour
+            </Button>
+            <Button onClick={() => handleUpdatePois()}> Finish </Button>
+          </>
+        )}
       </>
     );
   }
@@ -157,7 +162,6 @@ export default function TourCard(props) {
       </CardContent>
       <CardActions>
         <UsableButtons />
-        <Button onClick={() => handleUpdatePois()}> Finish </Button>
       </CardActions>
     </Card>
   );

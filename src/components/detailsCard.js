@@ -7,6 +7,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
+import { db } from "../firebase";
 
 const useStyles = makeStyles({
   card: {
@@ -41,7 +42,9 @@ function DetailsCard(props) {
         <Button variant="outlined" onClick={handleTourDetailsClick}>
           Add Destinations
         </Button>
-        <Button variant="outlined">Delete</Button>
+        <Button variant="outlined" onClick={handleDeleteTour}>
+          Delete
+        </Button>
       </>
     );
   }
@@ -73,6 +76,31 @@ function DetailsCard(props) {
 
   async function handleTourDetailsClick() {
     navigate(`/poilist/${uid}`);
+  }
+
+  function handleDeleteTour(props) {
+    const tourId = uid;
+    console.log(tourId);
+
+    const tourRef = db.ref("tours");
+    tourRef.once("value", (snap) => {
+      const tours = snap.val();
+      if (tours !== null) {
+        Object.keys(tours).forEach((uid) => {
+          if (uid === tourId) {
+            // The ID is the key
+            console.log(uid);
+            // The Object is foo[key]
+            console.log(tours[uid]);
+            //const tourPoiRef = db.ref(`tours/${uid}/pois`);
+            db.ref(`/tours/${uid}`).remove();
+            navigate("/tourlist");
+          } else {
+            console.log("Could not delete tour");
+          }
+        });
+      }
+    });
   }
 
   return (
