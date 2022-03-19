@@ -7,7 +7,8 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
-import { db } from "../firebase";
+import { db, storage } from "../firebase";
+import { ref as sRef, deleteObject } from "firebase/storage";
 
 const useStyles = makeStyles({
   card: {
@@ -31,7 +32,9 @@ function DetailsCard(props) {
         <Button variant="outlined" onClick={() => navigate(-1)}>
           Back
         </Button>
-        <Button variant="outlined">Delete</Button>
+        <Button variant="outlined" onClick={handleDeletePoi}>
+          Delete
+        </Button>
       </>
     );
   }
@@ -88,6 +91,14 @@ function DetailsCard(props) {
       if (tours !== null) {
         Object.keys(tours).forEach((uid) => {
           if (uid === tourId) {
+            const imageRef = sRef(storage, tours[uid].image);
+            deleteObject(imageRef)
+              .then(() => {
+                // File deleted successfully
+              })
+              .catch((error) => {
+                // Uh-oh, an error occurred!
+              });
             // The ID is the key
             console.log(uid);
             // The Object is foo[key]
@@ -97,6 +108,47 @@ function DetailsCard(props) {
             navigate("/tourlist");
           } else {
             console.log("Could not delete tour");
+          }
+        });
+      }
+    });
+  }
+
+  function handleDeletePoi(props) {
+    const poiId = uid;
+    console.log(poiId);
+
+    const poiRef = db.ref("pois");
+    poiRef.once("value", (snap) => {
+      const pois = snap.val();
+      if (pois !== null) {
+        Object.keys(pois).forEach((uid) => {
+          if (uid === poiId) {
+            const imageRef = sRef(storage, pois[uid].image);
+            deleteObject(imageRef)
+              .then(() => {
+                // File deleted successfully
+              })
+              .catch((error) => {
+                // Uh-oh, an error occurred!
+              });
+            const recordingRef = sRef(storage, pois[uid].recording);
+            deleteObject(recordingRef)
+              .then(() => {
+                // File deleted successfully
+              })
+              .catch((error) => {
+                // Uh-oh, an error occurred!
+              });
+            // The ID is the key
+            console.log(uid);
+            // The Object is foo[key]
+            console.log(pois[uid]);
+            //const tourPoiRef = db.ref(`tours/${uid}/pois`);
+            db.ref(`/pois/${uid}`).remove();
+            navigate("/poilist");
+          } else {
+            console.log("Could not delete POI");
           }
         });
       }
