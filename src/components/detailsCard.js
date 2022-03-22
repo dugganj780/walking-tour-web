@@ -32,6 +32,9 @@ function DetailsCard(props) {
         <Button variant="outlined" onClick={() => navigate(-1)}>
           Back
         </Button>
+        <Button variant="outlined" onClick={handleUpdatePoiClick}>
+          Update Destination
+        </Button>
         <Button variant="outlined" onClick={handleDeletePoi}>
           Delete
         </Button>
@@ -86,6 +89,10 @@ function DetailsCard(props) {
 
   async function handleUpdateTourClick(props) {
     navigate(`/updatetour/${uid}`);
+  }
+
+  async function handleUpdatePoiClick(props) {
+    navigate(`/updatepoi/${uid}`);
   }
 
   function handleDeleteTour(props) {

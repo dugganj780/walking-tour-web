@@ -14,6 +14,7 @@ import CreatePoiPage from "./pages/createPoiPage";
 import TourDetailsPage from "./pages/tourDetailsPage";
 import PoiDetailsPage from "./pages/poiDetailsPage";
 import UpdateTourPage from "./pages/updateTourPage";
+import UpdatePoiPage from "./pages/updatePoiPage";
 
 const App = () => {
   return (
@@ -81,6 +82,14 @@ const App = () => {
             element={
               <PrivateRoute>
                 <UpdateTourPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/updatepoi/:poiId"
+            element={
+              <PrivateRoute>
+                <UpdatePoiPage />
               </PrivateRoute>
             }
           />
