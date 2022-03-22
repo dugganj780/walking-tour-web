@@ -64,7 +64,7 @@ export default function CreatePoiForm() {
   function uploadImageFile(file) {
     if (!file) return;
 
-    const storageRef = sRef(storage, `poiImages/${file.name}`);
+    const storageRef = sRef(storage, `poiImages/${uuidv4()}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     uploadTask.on(
@@ -89,7 +89,7 @@ export default function CreatePoiForm() {
   function uploadAudioFile(file) {
     if (!file) return;
 
-    const storageRef = sRef(storage, `poiAudio/${file.name}`);
+    const storageRef = sRef(storage, `poiAudio/${uuidv4()}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     uploadTask.on(

@@ -5,6 +5,7 @@ import MapViewPoi from "./mapViewPoi";
 import MapViewTour from "./mapViewTour";
 import DetailsCard from "./detailsCard";
 import NoPoisCard from "./noPoisMapView";
+import PoiList from "./poiList";
 
 function DetailsPageTemplate({ props, title, action }) {
   const { poi, pois } = props;
@@ -35,6 +36,7 @@ function DetailsPageTemplate({ props, title, action }) {
         </Grid>
         <Grid item xs={6}>
           <DetailsCard props={props} action={action} />
+          {!poi && <PoiList props={props} />}
         </Grid>
       </Grid>
     </>

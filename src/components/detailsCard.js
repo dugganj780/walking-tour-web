@@ -13,7 +13,7 @@ import { ref as sRef, deleteObject } from "firebase/storage";
 const useStyles = makeStyles({
   card: {
     width: "100%",
-    height: "90vh",
+    height: "65vh",
     margin: "10px",
   },
 });
@@ -44,6 +44,9 @@ function DetailsCard(props) {
       <>
         <Button variant="outlined" onClick={handleTourDetailsClick}>
           Add Destinations
+        </Button>
+        <Button variant="outlined" onClick={handleUpdateTourClick}>
+          Update Tour
         </Button>
         <Button variant="outlined" onClick={handleDeleteTour}>
           Delete
@@ -79,6 +82,10 @@ function DetailsCard(props) {
 
   async function handleTourDetailsClick() {
     navigate(`/poilist/${uid}`);
+  }
+
+  async function handleUpdateTourClick(props) {
+    navigate(`/updatetour/${uid}`);
   }
 
   function handleDeleteTour(props) {

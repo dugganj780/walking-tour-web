@@ -55,7 +55,7 @@ export default function TourCard(props) {
             <Button size="small" onClick={() => handleAddPoi()}>
               Add to Tour
             </Button>
-            <Button onClick={() => handleUpdatePois()}> Finish </Button>
+            <Button onClick={() => navigate(-1)}> Finish </Button>
           </>
         )}
       </>
@@ -97,12 +97,12 @@ export default function TourCard(props) {
     navigate(`/poi/${uid}`);
   }
 
-  function handleAddPoi(props) {
+  async function handleAddPoi(props) {
     const poiUid = uid;
     console.log(poiUid);
 
     const tourRef = db.ref("tours");
-    tourRef.once("value", (snap) => {
+    await tourRef.once("value", (snap) => {
       const tours = snap.val();
       if (tours !== null) {
         Object.keys(tours).forEach((uid) => {
