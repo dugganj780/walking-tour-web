@@ -8,7 +8,7 @@ import { makeStyles } from "@mui/styles";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
-import { db, storage } from "../firebase";
+import { auth, db, storage } from "../firebase";
 import { set, ref } from "firebase/database";
 import { ref as sRef } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
@@ -28,8 +28,8 @@ const useStyles = makeStyles({
   },
   paper: {
     padding: 20,
-    height: "70vh",
-    width: 280,
+    //height: "70vh",
+    //width: "50%",
     margin: "20px auto",
   },
 });
@@ -40,6 +40,7 @@ export default function CreateTourForm() {
   const [country, setCountry] = useState("");
   const [owner, setOwner] = useState("");
   const [progress, setProgress] = useState(0);
+  const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
   const uid = uuidv4();
 
@@ -88,7 +89,9 @@ export default function CreateTourForm() {
       title: title,
       city: city,
       country: country,
+      description: description,
       owner: owner,
+      ownerid: auth.currentUser.uid,
       image: image,
       pois: pois,
     };
@@ -109,6 +112,8 @@ export default function CreateTourForm() {
       city: city,
       country: country,
       owner: owner,
+      ownerid: auth.currentUser.uid,
+      description: description,
       image: image,
       pois: pois,
     });
@@ -171,6 +176,15 @@ export default function CreateTourForm() {
           value={owner}
           onChange={(e) => setOwner(e.target.value)}
           fullWidth
+        />
+        <TextField
+          id="description"
+          label="Description"
+          variant="standard"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          multiline
+          rows={4}
         />
         <Button variant="contained" onClick={handleCreateTourClick} fullWidth>
           Create Tour

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PageTemplate from "../components/pageTemplateList";
 import Image from "../images/home_image.jpg";
-import { db } from "../firebase";
+import { auth, db } from "../firebase";
 
 const TourListPage = (props) => {
   /*
@@ -72,6 +72,7 @@ const TourListPage = (props) => {
     },
   ];
   */
+  const currentUserId = auth.currentUser.uid;
   const [tours, setTours] = useState([]);
 
   useEffect(() => {
@@ -80,7 +81,9 @@ const TourListPage = (props) => {
       const tour = snapshot.val();
       const tours = [];
       for (let id in tour) {
-        tours.push(tour[id]);
+        if (tour[id].ownerid === currentUserId) {
+          tours.push(tour[id]);
+        }
       }
       console.log(tours);
       setTours(tours);

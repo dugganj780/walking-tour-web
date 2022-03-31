@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -24,6 +24,7 @@ import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import LocationCityOutlinedIcon from "@mui/icons-material/LocationCityOutlined";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { auth, db } from "../firebase";
 
 const drawerWidth = 240;
 
@@ -54,10 +55,37 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 export default function NavigationDrawer(title) {
-  const { currentUser, logout } = useAuth();
+  const { logout } = useAuth();
+  const currentUserUid = auth.currentUser.uid;
   const navigate = useNavigate();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [user, setUser] = useState(null);
+  const [admin, setAdmin] = useState(false);
+
+  useEffect(() => {
+    const userRef = db.ref("users");
+    userRef.on("value", (snap) => {
+      const users = snap.val();
+      if (users !== null) {
+        Object.keys(users).forEach((uid) => {
+          if (uid === currentUserUid) {
+            // The ID is the key
+            console.log(uid);
+            // The Object is foo[key]
+            console.log(users[uid]);
+            setUser(users[uid]);
+            console.log(users[uid].admin);
+            setAdmin(users[uid].admin);
+            //setFirstName(users[uid].firstName);
+            //setSurname(users[uid].surname);
+            //setMessage("Please Update Your Account Details Here");
+            //setButtonMessage("Update Details");
+          }
+        });
+      }
+    });
+  }, []);
 
   async function handleLogout() {
     await logout();
@@ -105,6 +133,14 @@ export default function NavigationDrawer(title) {
       text: "Logout",
       icon: <LogoutOutlinedIcon />,
       onClick: () => handleLogout(),
+    },
+  ];
+
+  const adminOptions = [
+    {
+      text: "All Tours",
+      icon: <FormatListBulletedOutlinedIcon />,
+      onClick: () => navigate("/alltours"),
     },
   ];
 
@@ -175,6 +211,23 @@ export default function NavigationDrawer(title) {
             );
           })}
         </List>
+        {admin && (
+          <>
+            <Divider />
+            <List>
+              {adminOptions.map((item, index) => {
+                const { text, icon, onClick } = item;
+
+                return (
+                  <ListItem button key={text} onClick={onClick}>
+                    {icon && <ListItemIcon>{icon}</ListItemIcon>}
+                    <ListItemText primary={text} />
+                  </ListItem>
+                );
+              })}
+            </List>
+          </>
+        )}
       </Drawer>
     </Box>
   );

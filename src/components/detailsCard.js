@@ -21,8 +21,18 @@ const useStyles = makeStyles({
 function DetailsCard(props) {
   console.log(props);
   const classes = useStyles();
-  const { uid, title, owner, city, country, image, lat, lng, poi } =
-    props.props;
+  const {
+    uid,
+    title,
+    owner,
+    city,
+    country,
+    description,
+    image,
+    lat,
+    lng,
+    poi,
+  } = props.props;
   const navigate = useNavigate();
 
   function PoiButtons(props) {
@@ -71,7 +81,11 @@ function DetailsCard(props) {
         </>
       );
     } else {
-      return null;
+      return (
+        <Typography variant="h6" color="text.secondary">
+          Description: {description}
+        </Typography>
+      );
     }
   }
 

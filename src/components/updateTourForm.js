@@ -28,19 +28,20 @@ const useStyles = makeStyles({
   },
   paper: {
     padding: 20,
-    height: "70vh",
-    width: 280,
+    //height: "70vh",
+    //width: 280,
     margin: "20px auto",
   },
 });
 
 export default function UpdateTourForm(props) {
-  const { uid, title, city, country, owner, pois } = props.props;
+  const { uid, title, city, country, owner, description, pois } = props.props;
   const [activeTour, setActiveTour] = useState(null);
   const [newTitle, setTitle] = useState(title);
   const [newCity, setCity] = useState(city);
   const [newCountry, setCountry] = useState(country);
   const [newOwner, setOwner] = useState(owner);
+  const [newDescription, setDescription] = useState(description);
   const [progress, setProgress] = useState(0);
   const [image, setImage] = useState("");
   const navigate = useNavigate();
@@ -90,6 +91,7 @@ export default function UpdateTourForm(props) {
       city: newCity,
       country: newCountry,
       owner: newOwner,
+      description: newDescription,
       image: image,
       pois: pois,
     };
@@ -110,6 +112,7 @@ export default function UpdateTourForm(props) {
       city: newCity,
       country: newCountry,
       owner: newOwner,
+      description: newDescription,
       image: image,
       pois: pois,
     });
@@ -167,6 +170,15 @@ export default function UpdateTourForm(props) {
           value={newOwner}
           onChange={(e) => setOwner(e.target.value)}
           fullWidth
+        />
+        <TextField
+          id="description"
+          label="Description"
+          variant="standard"
+          value={newDescription}
+          onChange={(e) => setDescription(e.target.value)}
+          multiline
+          rows={4}
         />
         <Button variant="contained" onClick={handleUpdateTourClick} fullWidth>
           Create Tour

@@ -49,6 +49,7 @@ export default function LoginForm() {
       setError("");
       setLoading(true);
       await register(email.current.value, password.current.value);
+      navigate("/register");
     } catch {
       setError("Failed to create an account");
     }
