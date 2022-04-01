@@ -27,8 +27,8 @@ const useStyles = makeStyles({
   },
   paper: {
     padding: 20,
-    height: "70vh",
-    width: 280,
+    height: "100%",
+    width: "100%",
     margin: "20px auto",
   },
 });

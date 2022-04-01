@@ -24,7 +24,17 @@ const theme = createTheme({
     primary: {
       main: "#04A777",
     },
+    text: {
+      primary: "#04A777",
+      secondary: "#05C78D",
+      disabled: "#06DB9B",
+    },
+    background: {
+      paper: "#EFEAE6",
+      default: "#EFEAE6",
+    },
   },
+  typography: {},
 });
 
 const App = () => {

@@ -4,15 +4,22 @@ import LoginForm from "../components/loginForm";
 import "../App.css";
 import "../index.css";
 import Grid from "@mui/material/Grid";
+import WelcomeCard from "../components/welcomeCard";
 
 const HomePage = () => {
   return (
-    <Grid container justify="center">
-      <Grid xs={4} />
+    <Grid container>
+      <Grid xs={1} />
+
+      <Grid item xs={4}>
+        <WelcomeCard />
+      </Grid>
+      <Grid xs={2} />
+
       <Grid item xs={4} align="center">
         <LoginForm />
       </Grid>
-      <Grid xs={4} />
+      <Grid xs={1} />
     </Grid>
   );
 };
