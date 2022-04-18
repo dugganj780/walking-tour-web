@@ -3,6 +3,7 @@ import Grid from "@mui/material/Grid";
 import NavigationDrawer from "../components/navigationDrawer";
 import UserList from "../components/userList";
 import { useNavigate } from "react-router-dom";
+import NotAuthorisedCard from "../components/notAuthorisedCard";
 
 import { auth, db } from "../firebase";
 
@@ -45,6 +46,7 @@ const UserListPage = () => {
         <Grid xs={4} />
         <Grid item xs={4} align="center">
           {isAdmin && <UserList />}
+          {!isAdmin && <NotAuthorisedCard />}
         </Grid>
         <Grid xs={4} />
       </Grid>

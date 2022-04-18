@@ -3,6 +3,7 @@ import PageTemplate from "../components/pageTemplateList";
 import Image from "../images/home_image.jpg";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase";
+import NotAuthorisedCard from "../components/notAuthorisedCard";
 
 const AllPoisPage = (props) => {
   const currentUserUid = auth.currentUser.uid;
@@ -50,7 +51,10 @@ const AllPoisPage = (props) => {
   }, []);
 
   return (
-    <>{isAdmin && <PageTemplate title="All Destinations" props={pois} />}</>
+    <>
+      {isAdmin && <PageTemplate title="All Destinations" props={pois} />}
+      {!isAdmin && <NotAuthorisedCard />}
+    </>
   );
 };
 

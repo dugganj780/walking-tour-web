@@ -45,11 +45,6 @@ export default function TourCard(props) {
         <Button size="small" onClick={() => handlePoiDetailsClick()}>
           View Details
         </Button>
-        {!activeTour && (
-          <Button size="small" onClick={onDelete}>
-            Delete
-          </Button>
-        )}
         {activeTour && (
           <>
             <Button size="small" onClick={() => handleAddPoi()}>
