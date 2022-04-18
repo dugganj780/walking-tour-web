@@ -45,8 +45,10 @@ export default function CreateTourForm() {
   const [progress, setProgress] = useState(0);
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
+  const [imageUploaded, setImageUploaded] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const uid = uuidv4();
-  const navigate = useNavigate;
+  const navigate = useNavigate();
   var currentdate = new Date();
   var datetime =
     currentdate.getDate() +
@@ -91,6 +93,7 @@ export default function CreateTourForm() {
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
           console.log(url);
+          setImageUploaded(true);
           setImage(url);
         });
       }
@@ -99,37 +102,42 @@ export default function CreateTourForm() {
 
   async function handleCreateTourClick(e) {
     e.preventDefault();
+    if (!title || !owner || !city || !country || !description) {
+      setErrorMessage("Field Missing. Please check your entries and update.");
+    } else if (!imageUploaded) {
+      setErrorMessage("You must upload an image file");
+    } else {
+      const tour = {
+        uid: uid,
+        title: title,
+        city: city,
+        country: country,
+        description: description,
+        owner: owner,
+        ownerid: auth.currentUser.uid,
+        image: image,
+        pois: pois,
+      };
+      console.log(tour);
+      console.log(image);
+      setTours((tours) => {
+        return [...tours, tour];
+      });
 
-    const tour = {
-      uid: uid,
-      title: title,
-      city: city,
-      country: country,
-      description: description,
-      owner: owner,
-      ownerid: auth.currentUser.uid,
-      image: image,
-      pois: pois,
-    };
-    console.log(tour);
-    console.log(image);
-    setTours((tours) => {
-      return [...tours, tour];
-    });
+      set(ref(db, `/tours/${uid}`), {
+        uid: uid,
+        title: title,
+        city: city,
+        country: country,
+        owner: owner,
+        ownerid: auth.currentUser.uid,
+        description: description,
+        image: image,
+        pois: pois,
+      });
 
-    set(ref(db, `/tours/${uid}`), {
-      uid: uid,
-      title: title,
-      city: city,
-      country: country,
-      owner: owner,
-      ownerid: auth.currentUser.uid,
-      description: description,
-      image: image,
-      pois: pois,
-    });
-
-    navigate("/tourlist");
+      navigate("/tourlist");
+    }
   }
 
   /*
@@ -198,6 +206,7 @@ export default function CreateTourForm() {
           <button type="submit">Upload Image</button>
         </form>
         <CircularProgress variant="determinate" value={progress} />
+        <Typography color={"red"}>{errorMessage}</Typography>
 
         <Button variant="contained" onClick={handleCreateTourClick} fullWidth>
           Create Tour

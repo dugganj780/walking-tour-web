@@ -45,8 +45,11 @@ export default function CreatePoiForm() {
   const [lng, setLng] = useState(0.0);
   const [image, setImage] = useState("");
   const [recording, setRecording] = useState("");
+  const [imageUploaded, setImageUploaded] = useState(false);
+  const [audioUploaded, setAudioUploaded] = useState(false);
   const [imageProgress, setImageProgress] = useState(0);
   const [audioProgress, setAudioProgress] = useState(0);
+  const [errorMessage, setErrorMessage] = useState("");
   const uid = uuidv4();
   const navigate = useNavigate();
   var currentdate = new Date();
@@ -98,6 +101,7 @@ export default function CreatePoiForm() {
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
           console.log(url);
+          setImageUploaded(true);
           setImage(url);
         });
       }
@@ -123,6 +127,7 @@ export default function CreatePoiForm() {
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
           console.log(url);
+          setAudioUploaded(true);
           setRecording(url);
         });
       }
@@ -132,37 +137,50 @@ export default function CreatePoiForm() {
   async function handleCreateTourClick(e) {
     e.preventDefault();
 
-    console.log(title);
-    const poi = {
-      uid: uid,
-      poi: true,
-      title: title,
-      owner: owner,
-      ownerid: auth.currentUser.uid,
-      city: city,
-      lat: lat,
-      lng: lng,
-      image: image,
-      recording: recording,
-    };
-    setPois((pois) => {
-      return [...pois, poi];
-    });
+    if (!title || !owner || !city || !lat || !lng) {
+      setErrorMessage("Field Missing. Please check your entries and update.");
+    } else if (isNaN(+lat) || isNaN(+lng)) {
+      setErrorMessage(
+        "You must enter a numerical value for Latitude and Longitude"
+      );
+    } else if (!imageUploaded) {
+      setErrorMessage("You must upload an image file");
+    } else if (!audioUploaded) {
+      setErrorMessage("You must upload an audio file");
+    } else {
+      const poi = {
+        uid: uid,
+        poi: true,
+        title: title,
+        owner: owner,
+        ownerid: auth.currentUser.uid,
+        city: city,
+        lat: lat,
+        lng: lng,
+        image: image,
+        recording: recording,
+      };
+      setPois((pois) => {
+        return [...pois, poi];
+      });
 
-    set(ref(db, `/pois/${uid}`), {
-      uid: uid,
-      poi: true,
-      title: title,
-      owner: owner,
-      ownerid: auth.currentUser.uid,
-      city: city,
-      lat: lat,
-      lng: lng,
-      image: image,
-      recording: recording,
-    });
+      set(ref(db, `/pois/${uid}`), {
+        uid: uid,
+        poi: true,
+        title: title,
+        owner: owner,
+        ownerid: auth.currentUser.uid,
+        city: city,
+        lat: lat,
+        lng: lng,
+        image: image,
+        recording: recording,
+      });
 
-    navigate("/poilist");
+      navigate("/poilist");
+    }
+
+    //console.log(title);
   }
 
   return (
@@ -221,7 +239,7 @@ export default function CreatePoiForm() {
           <button type="submit">Upload Recording</button>
         </form>
         <CircularProgress variant="determinate" value={audioProgress} />
-
+        <Typography color={"red"}>{errorMessage}</Typography>
         <Button variant="contained" onClick={handleCreateTourClick} fullWidth>
           Create Destination
         </Button>
