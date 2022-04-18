@@ -37,6 +37,8 @@ const useStyles = makeStyles({
 export default function RegistrationForm() {
   const [firstName, setFirstName] = useState("");
   const [surname, setSurname] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
   const uid = auth.currentUser.uid;
   const email = auth.currentUser.email;
   const tourGuide = true;
@@ -51,34 +53,37 @@ export default function RegistrationForm() {
 
   async function handleRegisterClick(e) {
     e.preventDefault();
+    if (!firstName || !surname) {
+      setErrorMessage("Field Missing. Please check your entries and update.");
+    } else {
+      const user = {
+        uid: uid,
+        firstName: firstName,
+        surname: surname,
+        email: email,
+        tourGuide: tourGuide,
+        admin: admin,
+        newUserWelcome: newUserWelcome,
+        newUserTour: newUserTour,
+        tours: tours,
+      };
+      console.log(user);
 
-    const user = {
-      uid: uid,
-      firstName: firstName,
-      surname: surname,
-      email: email,
-      tourGuide: tourGuide,
-      admin: admin,
-      newUserWelcome: newUserWelcome,
-      newUserTour: newUserTour,
-      tours: tours,
-    };
-    console.log(user);
+      set(ref(db, `/users/${uid}`), {
+        uid: uid,
+        firstName: firstName,
+        surname: surname,
+        email: email,
+        tourGuide: tourGuide,
+        admin: admin,
+        newUserWelcome: newUserWelcome,
+        newUserTour: newUserTour,
 
-    set(ref(db, `/users/${uid}`), {
-      uid: uid,
-      firstName: firstName,
-      surname: surname,
-      email: email,
-      tourGuide: tourGuide,
-      admin: admin,
-      newUserWelcome: newUserWelcome,
-      newUserTour: newUserTour,
+        tours: tours,
+      });
 
-      tours: tours,
-    });
-
-    navigate("/tourlist");
+      navigate("/tourlist");
+    }
   }
 
   /*
@@ -98,7 +103,7 @@ export default function RegistrationForm() {
 
   return (
     <Paper className={classes.paper}>
-      <Typography variant="h5">Create a Tour</Typography>
+      <Typography variant="h5">Complete Registration</Typography>
       <Stack spacing={2}>
         <TextField
           id="firstName"
@@ -117,6 +122,7 @@ export default function RegistrationForm() {
           onChange={(e) => setSurname(e.target.value)}
           fullWidth
         />
+        <Typography color={"red"}>{errorMessage}</Typography>
         <Button variant="contained" onClick={handleRegisterClick} fullWidth>
           Complete Registration
         </Button>

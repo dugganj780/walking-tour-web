@@ -45,15 +45,26 @@ export default function LoginForm() {
 
   async function handleRegisterSubmit(e) {
     e.preventDefault();
-    try {
-      setError("");
-      setLoading(true);
-      await register(email.current.value, password.current.value);
-      navigate("/register");
-    } catch {
-      setError("Failed to create an account");
+    const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+    if (!email.current.value || !password.current.value) {
+      setError("Field Missing. Please check your entries and update.");
+    } else if (password.current.value.toString().length < 5) {
+      console.log(password.current.value.toString().length);
+      setError("Password must be at least 6 characters in length");
+    } else if (!regex.test(email.current.value)) {
+      setError("Invalid email address");
+    } else {
+      try {
+        setError("");
+        setLoading(true);
+        await register(email.current.value, password.current.value);
+        navigate("/register");
+      } catch {
+        setError("Failed to create an account");
+      }
+      setLoading(false);
     }
-    setLoading(false);
   }
 
   async function handleLoginSubmit(e) {
@@ -95,6 +106,8 @@ export default function LoginForm() {
           inputRef={password}
           fullWidth
         />
+        <Typography color={"red"}>{error}</Typography>
+
         <Button
           variant="contained"
           onClick={handleLoginSubmit}
