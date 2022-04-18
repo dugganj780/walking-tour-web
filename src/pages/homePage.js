@@ -1,8 +1,6 @@
 import React from "react";
 import logo from "../logo.svg";
 import LoginForm from "../components/loginForm";
-import "../App.css";
-import "../index.css";
 import Grid from "@mui/material/Grid";
 import WelcomeCard from "../components/welcomeCard";
 

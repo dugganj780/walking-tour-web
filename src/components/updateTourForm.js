@@ -45,6 +45,19 @@ export default function UpdateTourForm(props) {
   const [progress, setProgress] = useState(0);
   const [image, setImage] = useState("");
   const navigate = useNavigate();
+  var currentdate = new Date();
+
+  var datetime =
+    currentdate.getDate() +
+    "." +
+    (currentdate.getMonth() + 1) +
+    "." +
+    currentdate.getFullYear() +
+    ", " +
+    currentdate.getHours() +
+    ":" +
+    currentdate.getMinutes() +
+    "_";
 
   const [tours, setTours] = useState([]);
 
@@ -60,7 +73,7 @@ export default function UpdateTourForm(props) {
   function uploadFiles(file) {
     if (!file) return;
 
-    const storageRef = sRef(storage, `tourImages/${uuidv4()}`);
+    const storageRef = sRef(storage, `tourImages/${datetime + file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     uploadTask.on(

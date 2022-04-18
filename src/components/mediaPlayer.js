@@ -106,7 +106,15 @@ export default function MediaPlayer(props) {
               {city}
             </Typography>
           </CardContent>
-          <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              pl: 1,
+              pb: 1,
+            }}
+          >
             <IconButton aria-label="previous" onClick={skipBack}>
               {theme.direction === "rtl" ? (
                 <SkipNextIcon />

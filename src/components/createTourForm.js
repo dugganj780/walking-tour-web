@@ -13,6 +13,7 @@ import { set, ref } from "firebase/database";
 import { ref as sRef } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const useStyles = makeStyles({
   card: {
@@ -28,6 +29,8 @@ const useStyles = makeStyles({
   },
   paper: {
     padding: 20,
+    height: "100%",
+
     //height: "70vh",
     //width: "50%",
     margin: "20px auto",
@@ -43,6 +46,19 @@ export default function CreateTourForm() {
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
   const uid = uuidv4();
+  const navigate = useNavigate;
+  var currentdate = new Date();
+  var datetime =
+    currentdate.getDate() +
+    "." +
+    (currentdate.getMonth() + 1) +
+    "." +
+    currentdate.getFullYear() +
+    ", " +
+    currentdate.getHours() +
+    ":" +
+    currentdate.getMinutes() +
+    "_";
 
   let pois = [];
   const [tours, setTours] = useState([]);
@@ -59,7 +75,7 @@ export default function CreateTourForm() {
   function uploadFiles(file) {
     if (!file) return;
 
-    const storageRef = sRef(storage, `tourImages/${file.name}`);
+    const storageRef = sRef(storage, `tourImages/${datetime + file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     uploadTask.on(
@@ -101,11 +117,6 @@ export default function CreateTourForm() {
       return [...tours, tour];
     });
 
-    /*
-    const tourRef = db.ref("tours");
-    tourRef.push(tour);
-    */
-
     set(ref(db, `/tours/${uid}`), {
       uid: uid,
       title: title,
@@ -118,11 +129,7 @@ export default function CreateTourForm() {
       pois: pois,
     });
 
-    setImage("");
-    setTitle("");
-    setCity("");
-    setCountry("");
-    setOwner("");
+    navigate("/tourlist");
   }
 
   /*
@@ -186,16 +193,18 @@ export default function CreateTourForm() {
           multiline
           rows={4}
         />
+        <form onSubmit={uploadHandler}>
+          <input type="file" className="input" />
+          <button type="submit">Upload Image</button>
+        </form>
+        <CircularProgress variant="determinate" value={progress} />
+
         <Button variant="contained" onClick={handleCreateTourClick} fullWidth>
           Create Tour
         </Button>
         <Button variant="contained" fullWidth>
           Cancel
         </Button>
-        <form onSubmit={uploadHandler}>
-          <input type="file" className="input" />
-          <button type="submit">Upload Image</button>
-        </form>
       </Stack>
     </Paper>
   );

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import UpdateTourForm from "../components/updateTourForm";
-import "../App.css";
-import "../index.css";
 import Grid from "@mui/material/Grid";
 import NavigationDrawer from "../components/navigationDrawer";
 import { db } from "../firebase";

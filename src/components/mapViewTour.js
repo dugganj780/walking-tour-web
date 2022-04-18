@@ -18,6 +18,7 @@ const useStyles = makeStyles({
     width: "100%",
     height: "90vh",
     margin: "10px",
+    alignSelf: "center",
   },
 });
 

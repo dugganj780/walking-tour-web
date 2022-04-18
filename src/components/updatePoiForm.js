@@ -45,6 +45,19 @@ export default function UpdatePoiForm(props) {
   const [newImage, setImage] = useState(image);
   const [newRecording, setRecording] = useState(recording);
   const navigate = useNavigate();
+  var currentdate = new Date();
+
+  var datetime =
+    currentdate.getDate() +
+    "." +
+    (currentdate.getMonth() + 1) +
+    "." +
+    currentdate.getFullYear() +
+    ", " +
+    currentdate.getHours() +
+    ":" +
+    currentdate.getMinutes() +
+    "_";
 
   //const navigate = useNavigate();
   const classes = useStyles();
@@ -64,7 +77,7 @@ export default function UpdatePoiForm(props) {
   function uploadImageFile(file) {
     if (!file) return;
 
-    const storageRef = sRef(storage, `poiImages/${uuidv4()}`);
+    const storageRef = sRef(storage, `poiImages/${datetime + file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     uploadTask.on(
@@ -89,7 +102,7 @@ export default function UpdatePoiForm(props) {
   function uploadAudioFile(file) {
     if (!file) return;
 
-    const storageRef = sRef(storage, `poiAudio/${uuidv4()}`);
+    const storageRef = sRef(storage, `poiAudio/${datetime + file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     uploadTask.on(

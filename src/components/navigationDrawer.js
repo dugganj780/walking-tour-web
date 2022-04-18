@@ -142,6 +142,11 @@ export default function NavigationDrawer(title) {
       icon: <FormatListBulletedOutlinedIcon />,
       onClick: () => navigate("/alltours"),
     },
+    {
+      text: "All Users",
+      icon: <FormatListBulletedOutlinedIcon />,
+      onClick: () => navigate("/allusers"),
+    },
   ];
 
   return (

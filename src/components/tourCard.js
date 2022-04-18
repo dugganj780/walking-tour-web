@@ -68,9 +68,6 @@ export default function TourCard(props) {
         <Button size="small" onClick={() => handleTourDetailsClick()}>
           View Tour
         </Button>
-        <Button size="small" onClick={onDelete}>
-          Delete
-        </Button>
       </>
     );
   }

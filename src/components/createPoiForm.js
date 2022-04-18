@@ -13,6 +13,7 @@ import { set, ref } from "firebase/database";
 import { ref as sRef } from "firebase/storage";
 import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const useStyles = makeStyles({
   card: {
@@ -28,8 +29,10 @@ const useStyles = makeStyles({
   },
   paper: {
     padding: 20,
-    height: "70vh",
-    width: 280,
+    height: "100%",
+
+    //height: "70vh",
+    //width: "50%",
     margin: "20px auto",
   },
 });
@@ -42,7 +45,22 @@ export default function CreatePoiForm() {
   const [lng, setLng] = useState(0.0);
   const [image, setImage] = useState("");
   const [recording, setRecording] = useState("");
+  const [imageProgress, setImageProgress] = useState(0);
+  const [audioProgress, setAudioProgress] = useState(0);
   const uid = uuidv4();
+  const navigate = useNavigate();
+  var currentdate = new Date();
+  var datetime =
+    currentdate.getDate() +
+    "." +
+    (currentdate.getMonth() + 1) +
+    "." +
+    currentdate.getFullYear() +
+    ", " +
+    currentdate.getHours() +
+    ":" +
+    currentdate.getMinutes() +
+    "_";
 
   const [pois, setPois] = useState([]);
 
@@ -64,7 +82,7 @@ export default function CreatePoiForm() {
   function uploadImageFile(file) {
     if (!file) return;
 
-    const storageRef = sRef(storage, `poiImages/${uuidv4()}`);
+    const storageRef = sRef(storage, `poiImages/${datetime + file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     uploadTask.on(
@@ -74,7 +92,7 @@ export default function CreatePoiForm() {
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
         );
 
-        //setProgress(prog);
+        setImageProgress(prog);
       },
       (err) => console.log(err),
       () => {
@@ -89,7 +107,7 @@ export default function CreatePoiForm() {
   function uploadAudioFile(file) {
     if (!file) return;
 
-    const storageRef = sRef(storage, `poiAudio/${uuidv4()}`);
+    const storageRef = sRef(storage, `poiAudio/${datetime + file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     uploadTask.on(
@@ -99,7 +117,7 @@ export default function CreatePoiForm() {
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
         );
 
-        //setProgress(prog);
+        setAudioProgress(prog);
       },
       (err) => console.log(err),
       () => {
@@ -144,17 +162,12 @@ export default function CreatePoiForm() {
       recording: recording,
     });
 
-    console.log(poi);
-    setTitle("");
-    setCity("");
-    setOwner("");
-    setLat(0.0);
-    setLng(0.0);
+    navigate("/poilist");
   }
 
   return (
     <Paper className={classes.paper}>
-      <Typography variant="h5">Create a Tour</Typography>
+      <Typography variant="h5">Create a Destination</Typography>
       <Stack spacing={2}>
         <TextField
           id="title"
@@ -201,10 +214,14 @@ export default function CreatePoiForm() {
           <input type="file" className="input" />
           <button type="submit">Upload Image</button>
         </form>
+        <CircularProgress variant="determinate" value={imageProgress} />
+
         <form onSubmit={uploadAudioHandler}>
           <input type="file" className="input" />
           <button type="submit">Upload Recording</button>
         </form>
+        <CircularProgress variant="determinate" value={audioProgress} />
+
         <Button variant="contained" onClick={handleCreateTourClick} fullWidth>
           Create Destination
         </Button>

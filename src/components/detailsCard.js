@@ -127,11 +127,8 @@ function DetailsCard(props) {
               .catch((error) => {
                 // Uh-oh, an error occurred!
               });
-            // The ID is the key
             console.log(uid);
-            // The Object is foo[key]
             console.log(tours[uid]);
-            //const tourPoiRef = db.ref(`tours/${uid}/pois`);
             db.ref(`/tours/${uid}`).remove();
             navigate("/tourlist");
           } else {

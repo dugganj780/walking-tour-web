@@ -40,7 +40,8 @@ export default function RegistrationForm() {
   const uid = auth.currentUser.uid;
   const email = auth.currentUser.email;
   const tourGuide = true;
-  const newUser = true;
+  const newUserWelcome = true;
+  const newUserTour = true;
   const admin = false;
   let tours = [];
   const navigate = useNavigate();
@@ -58,7 +59,8 @@ export default function RegistrationForm() {
       email: email,
       tourGuide: tourGuide,
       admin: admin,
-      newUser: newUser,
+      newUserWelcome: newUserWelcome,
+      newUserTour: newUserTour,
       tours: tours,
     };
     console.log(user);
@@ -70,7 +72,8 @@ export default function RegistrationForm() {
       email: email,
       tourGuide: tourGuide,
       admin: admin,
-      newUser: newUser,
+      newUserWelcome: newUserWelcome,
+      newUserTour: newUserTour,
 
       tours: tours,
     });

@@ -18,6 +18,7 @@ import UpdatePoiPage from "./pages/updatePoiPage";
 import RegistrationPage from "./pages/registrationPage";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import AllToursPage from "./pages/allToursPage";
+import UserListPage from "./pages/userListPage";
 
 const theme = createTheme({
   palette: {
@@ -136,6 +137,14 @@ const App = () => {
               element={
                 <PrivateRoute>
                   <CreatePoiPage />
+                </PrivateRoute>
+              }
+            />{" "}
+            <Route
+              path="/allusers"
+              element={
+                <PrivateRoute>
+                  <UserListPage />
                 </PrivateRoute>
               }
             />
