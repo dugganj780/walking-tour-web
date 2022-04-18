@@ -19,6 +19,7 @@ import RegistrationPage from "./pages/registrationPage";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import AllToursPage from "./pages/allToursPage";
 import UserListPage from "./pages/userListPage";
+import AllPoisPage from "./pages/allPoisPage";
 
 const theme = createTheme({
   palette: {
@@ -105,6 +106,14 @@ const App = () => {
               element={
                 <PrivateRoute>
                   <PoiListPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/allpois"
+              element={
+                <PrivateRoute>
+                  <AllPoisPage />
                 </PrivateRoute>
               }
             />

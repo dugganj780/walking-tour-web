@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PageTemplate from "../components/pageTemplateList";
 import Image from "../images/home_image.jpg";
-import { db } from "../firebase";
+import { auth, db } from "../firebase";
 
 const PoiListPage = (props) => {
   /*
@@ -72,6 +72,7 @@ const PoiListPage = (props) => {
     },
   ];
   */
+  const currentUserId = auth.currentUser.uid;
 
   const [pois, setPois] = useState([]);
 
@@ -81,7 +82,9 @@ const PoiListPage = (props) => {
       const poi = snapshot.val();
       const pois = [];
       for (let id in poi) {
-        pois.push(poi[id]);
+        if (poi[id].ownerid === currentUserId) {
+          pois.push(poi[id]);
+        }
       }
       console.log(pois);
       setPois(pois);
