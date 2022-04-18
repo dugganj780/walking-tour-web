@@ -106,7 +106,6 @@ export default function LoginForm() {
           inputRef={password}
           fullWidth
         />
-        <Typography color={"red"}>{error}</Typography>
 
         <Button
           variant="contained"
