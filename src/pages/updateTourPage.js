@@ -16,10 +16,6 @@ const UpdateTourPage = () => {
       if (tours !== null) {
         Object.keys(tours).forEach((uid) => {
           if (uid === tourId) {
-            // The ID is the key
-            console.log(uid);
-            // The Object is foo[key]
-            console.log(tours[uid]);
             setTour(tours[uid]);
           }
         });

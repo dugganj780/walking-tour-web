@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import NavigationDrawer from "./navigationDrawer";
 import makeStyles from "@mui/styles/makeStyles";
 import TourList from "./tourList";
@@ -12,9 +12,6 @@ const useStyles = makeStyles({
 
 function ListPageTemplate({ props, title, action }) {
   const classes = useStyles();
-  //const [nameFilter, setNameFilter] = useState("");
-  //const [genreFilter, setGenreFilter] = useState("0");
-  //const genreId = Number(genreFilter);
 
   return (
     <>

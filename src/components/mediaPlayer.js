@@ -88,8 +88,6 @@ export default function MediaPlayer(props) {
     setPercentage(e.target.value);
   }
 
-  console.log(recording);
-
   return (
     <>
       <Card sx={{ display: "flex" }} className={classes.card}>

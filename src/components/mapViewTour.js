@@ -1,10 +1,8 @@
 import { makeStyles } from "@mui/styles";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import { Icon } from "leaflet";
 import Card from "@mui/material/Card";
 import Button from "@mui/material/Button";
 import React, { useState, useEffect } from "react";
-import MediaPlayer from "./mediaPlayer";
 import { Typography } from "@mui/material";
 import { db } from "../firebase";
 import { useNavigate } from "react-router-dom";
@@ -35,21 +33,15 @@ function MapViewTour(props) {
       poiRef.on("value", (snapshot) => {
         const poi = snapshot.val();
         const dbPois = [];
-        console.log(pois);
         const keys = Object.keys(pois);
-        console.log(keys);
         for (let id in poi) {
           keys.forEach((key, index) => {
             if (key === id) {
-              console.log(key);
               dbPois.push(poi[id]);
-              console.log(dbPois);
             }
           });
         }
-        console.log(dbPois);
         setFoundPois(dbPois);
-        console.log(foundPois[0].lat);
       });
     };
     getPois();
@@ -57,7 +49,6 @@ function MapViewTour(props) {
 
   function handleClick(props) {
     setActivePoi(props);
-    console.log(activePoi);
   }
 
   return (
@@ -73,7 +64,6 @@ function MapViewTour(props) {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           />
           {foundPois.map((poi) => {
-            console.log(poi.lat);
             return (
               <>
                 <Marker
@@ -81,10 +71,7 @@ function MapViewTour(props) {
                   position={[poi.lat, poi.lng]}
                   eventHandlers={{
                     click: (e) => {
-                      console.log(poi);
-                      console.log("marker clicked", e);
                       handleClick(poi);
-                      console.log(activePoi);
                     },
                   }}
                 />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import NavigationDrawer from "./navigationDrawer";
 import Grid from "@mui/material/Grid";
 import MapViewPoi from "./mapViewPoi";
@@ -9,10 +9,8 @@ import PoiList from "./poiList";
 
 function DetailsPageTemplate({ props, title, action }) {
   const { poi, pois } = props;
-  //console.log(props);
 
   function UsableMap(props) {
-    console.log(props);
     if (poi) {
       return <MapViewPoi props={props} />;
     } else {

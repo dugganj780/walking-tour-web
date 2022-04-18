@@ -15,8 +15,6 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import FormatListBulletedOutlinedIcon from "@mui/icons-material/FormatListBulletedOutlined";
 import AddLocationAltOutlinedIcon from "@mui/icons-material/AddLocationAltOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
@@ -70,17 +68,8 @@ export default function NavigationDrawer(title) {
       if (users !== null) {
         Object.keys(users).forEach((uid) => {
           if (uid === currentUserUid) {
-            // The ID is the key
-            console.log(uid);
-            // The Object is foo[key]
-            console.log(users[uid]);
             setUser(users[uid]);
-            console.log(users[uid].admin);
             setAdmin(users[uid].admin);
-            //setFirstName(users[uid].firstName);
-            //setSurname(users[uid].surname);
-            //setMessage("Please Update Your Account Details Here");
-            //setButtonMessage("Update Details");
           }
         });
       }
@@ -120,11 +109,6 @@ export default function NavigationDrawer(title) {
       text: "Create Place",
       icon: <AddLocationAltOutlinedIcon />,
       onClick: () => navigate("/createpoi"),
-    },
-    {
-      text: "Test Page",
-      icon: <AddLocationAltOutlinedIcon />,
-      onClick: () => navigate("/testpage"),
     },
   ];
 

@@ -1,18 +1,15 @@
 import React, { useRef, useState } from "react";
 import Paper from "@mui/material/Paper";
 import { Stack } from "@mui/material";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import { makeStyles } from "@mui/styles";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
-import { db, auth, storage } from "../firebase";
+import { db, storage } from "../firebase";
 import { set, ref } from "firebase/database";
 import { ref as sRef } from "firebase/storage";
 import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import { v4 as uuidv4 } from "uuid";
 
 const useStyles = makeStyles({
   card: {
@@ -59,7 +56,6 @@ export default function UpdatePoiForm(props) {
     currentdate.getMinutes() +
     "_";
 
-  //const navigate = useNavigate();
   const classes = useStyles();
 
   const uploadImageHandler = (e) => {
@@ -92,7 +88,6 @@ export default function UpdatePoiForm(props) {
       (err) => console.log(err),
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          console.log(url);
           setImage(url);
         });
       }
@@ -117,7 +112,6 @@ export default function UpdatePoiForm(props) {
       (err) => console.log(err),
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          console.log(url);
           setRecording(url);
         });
       }
@@ -127,7 +121,6 @@ export default function UpdatePoiForm(props) {
   async function handleUpdatePoiClick(e) {
     e.preventDefault();
 
-    console.log(title);
     const poi = {
       uid: uid,
       poi: true,
@@ -154,7 +147,6 @@ export default function UpdatePoiForm(props) {
       recording: newRecording,
     });
 
-    console.log(poi);
     navigate(-1);
   }
 

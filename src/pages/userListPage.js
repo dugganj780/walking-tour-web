@@ -19,20 +19,12 @@ const UserListPage = () => {
       const users = snap.val();
       if (users !== null) {
         Object.keys(users).forEach((uid) => {
-          console.log("using effect");
           if (currentUserUid === uid) {
-            console.log(uid);
             setIsAdmin(true);
-            // The Object is foo[key]
-            console.log(users[uid]);
+
             if (!users[uid].admin) {
               navigate("/tourlist");
             }
-
-            //setFirstName(users[uid].firstName);
-            //setSurname(users[uid].surname);
-            //setMessage("Please Update Your Account Details Here");
-            //setButtonMessage("Update Details");
           }
         });
       }

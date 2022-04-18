@@ -3,7 +3,6 @@ import { makeStyles } from "@mui/styles";
 
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
@@ -24,7 +23,6 @@ const useStyles = makeStyles({
 
 export default function PoiList(props) {
   const { uid, pois } = props.props;
-  const [activePoi, setActivePoi] = useState(null);
   const [foundPois, setFoundPois] = useState([]);
   const classes = useStyles();
   const navigate = useNavigate();
@@ -35,19 +33,14 @@ export default function PoiList(props) {
       poiRef.on("value", (snapshot) => {
         const poi = snapshot.val();
         const dbPois = [];
-        console.log(pois);
         const keys = Object.keys(pois);
-        console.log(keys);
         for (let id in poi) {
           keys.forEach((key, index) => {
             if (key === id) {
-              console.log(key);
               dbPois.push(poi[id]);
-              console.log(dbPois);
             }
           });
         }
-        console.log(dbPois);
         setFoundPois(dbPois);
       });
     };
@@ -56,7 +49,6 @@ export default function PoiList(props) {
 
   async function handleRemovePoi(id) {
     const tourId = uid;
-    console.log(tourId);
 
     const tourRef = db.ref("tours");
     tourRef.once("value", (snap) => {
@@ -64,14 +56,8 @@ export default function PoiList(props) {
       if (tours !== null) {
         Object.keys(tours).forEach((uid) => {
           if (uid === tourId) {
-            // The ID is the key
-            console.log(uid);
-            // The Object is foo[key]
-            console.log(tours[uid]);
-            //const tourPoiRef = db.ref(`tours/${uid}/pois`);
             db.ref(`/tours/${uid}/pois/${id}`).remove();
             navigate(0);
-            //navigate("/tourlist");
           } else {
             console.log("Could not delete tour");
           }

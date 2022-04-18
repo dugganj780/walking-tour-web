@@ -1,8 +1,6 @@
 import React, { useRef, useState } from "react";
 import Paper from "@mui/material/Paper";
 import { Stack } from "@mui/material";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import { makeStyles } from "@mui/styles";
 import TextField from "@mui/material/TextField";
@@ -100,7 +98,6 @@ export default function CreatePoiForm() {
       (err) => console.log(err),
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          console.log(url);
           setImageUploaded(true);
           setImage(url);
         });
@@ -126,7 +123,6 @@ export default function CreatePoiForm() {
       (err) => console.log(err),
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          console.log(url);
           setAudioUploaded(true);
           setRecording(url);
         });
@@ -179,8 +175,6 @@ export default function CreatePoiForm() {
 
       navigate("/poilist");
     }
-
-    //console.log(title);
   }
 
   return (

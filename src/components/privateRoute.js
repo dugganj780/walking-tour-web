@@ -6,7 +6,7 @@ export default function PrivateRoute({ children }) {
   const { currentUser } = useAuth();
   return currentUser ? children : <Navigate to="/" />;
 }
-/*
+/* Former Private Routes Code
 export default function PrivateRoute({ element: Element, ...rest }) {
     const { currentUser } = useAuth();
     return (

@@ -3,8 +3,6 @@ import Paper from "@mui/material/Paper";
 import { Avatar } from "@mui/material";
 import LockOutlined from "@mui/icons-material/LockOutlined";
 import { Stack } from "@mui/material";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import { makeStyles } from "@mui/styles";
 import TextField from "@mui/material/TextField";
@@ -50,7 +48,6 @@ export default function LoginForm() {
     if (!email.current.value || !password.current.value) {
       setError("Field Missing. Please check your entries and update.");
     } else if (password.current.value.toString().length < 5) {
-      console.log(password.current.value.toString().length);
       setError("Password must be at least 6 characters in length");
     } else if (!regex.test(email.current.value)) {
       setError("Invalid email address");

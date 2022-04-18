@@ -1,18 +1,13 @@
 import React, { useRef, useState } from "react";
 import Paper from "@mui/material/Paper";
 import { Stack } from "@mui/material";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import { makeStyles } from "@mui/styles";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
-import { auth, db, storage } from "../firebase";
+import { auth, db } from "../firebase";
 import { set, ref } from "firebase/database";
-import { ref as sRef } from "firebase/storage";
-import { v4 as uuidv4 } from "uuid";
-import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
 const useStyles = makeStyles({
   card: {
@@ -28,8 +23,6 @@ const useStyles = makeStyles({
   },
   paper: {
     padding: 20,
-    //height: "70vh",
-    //width: "50%",
     margin: "20px auto",
   },
 });
@@ -48,7 +41,6 @@ export default function RegistrationForm() {
   let tours = [];
   const navigate = useNavigate();
 
-  //const navigate = useNavigate();
   const classes = useStyles();
 
   async function handleRegisterClick(e) {
@@ -67,7 +59,6 @@ export default function RegistrationForm() {
         newUserTour: newUserTour,
         tours: tours,
       };
-      console.log(user);
 
       set(ref(db, `/users/${uid}`), {
         uid: uid,
@@ -85,21 +76,6 @@ export default function RegistrationForm() {
       navigate("/tourlist");
     }
   }
-
-  /*
-  async function handleLoginSubmit(e) {
-    e.preventDefault();
-    try {
-      setError("");
-      setLoading(true);
-      await login(email.current.value, password.current.value);
-      navigate("/tourlist");
-    } catch {
-      setError("Failed to log in");
-    }
-    setLoading(false);
-  }
-  */
 
   return (
     <Paper className={classes.paper}>

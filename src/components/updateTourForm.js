@@ -1,8 +1,6 @@
 import React, { useRef, useState } from "react";
 import Paper from "@mui/material/Paper";
 import { Stack } from "@mui/material";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import { makeStyles } from "@mui/styles";
 import TextField from "@mui/material/TextField";
@@ -11,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 import { db, storage } from "../firebase";
 import { set, ref } from "firebase/database";
 import { ref as sRef } from "firebase/storage";
-import { v4 as uuidv4 } from "uuid";
 import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
 const useStyles = makeStyles({
@@ -28,8 +25,6 @@ const useStyles = makeStyles({
   },
   paper: {
     padding: 20,
-    //height: "70vh",
-    //width: 280,
     margin: "20px auto",
   },
 });
@@ -88,7 +83,6 @@ export default function UpdateTourForm(props) {
       (err) => console.log(err),
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          console.log(url);
           setImage(url);
         });
       }
@@ -108,8 +102,7 @@ export default function UpdateTourForm(props) {
       image: image,
       pois: pois,
     };
-    console.log(tour);
-    console.log(image);
+
     setTours((tours) => {
       return [...tours, tour];
     });

@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@mui/styles";
-
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
@@ -36,14 +34,12 @@ export default function UserList() {
       for (let id in user) {
         users.push(user[id]);
       }
-      console.log(users);
       setFoundUsers(users);
     });
   }, []);
 
   function handleDeleteUser(id) {
     const userId = id;
-    console.log(userId);
 
     const userRef = db.ref("users");
     userRef.once("value", (snap) => {
@@ -51,7 +47,6 @@ export default function UserList() {
       if (users !== null) {
         Object.keys(users).forEach((uid) => {
           if (uid === userId) {
-            console.log(users[uid]);
             db.ref(`/users/${uid}`).remove();
             auth
               .deleteUser(id)

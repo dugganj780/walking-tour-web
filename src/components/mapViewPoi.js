@@ -1,6 +1,5 @@
 import { makeStyles } from "@mui/styles";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import { Icon } from "leaflet";
 import Card from "@mui/material/Card";
 import React, { useState } from "react";
 import MediaPlayer from "./mediaPlayer";
@@ -19,14 +18,12 @@ const useStyles = makeStyles({
 
 function MapViewPoi(props) {
   const { uid, title, lat, lng, poi } = props.props.props;
-  console.log(props);
   const classes = useStyles();
   const [activePoi, setActivePoi] = useState(null);
 
   function handleClick(e) {
     e.preventDefault();
     setActivePoi(props.props);
-    console.log(activePoi);
   }
 
   return (
@@ -41,9 +38,7 @@ function MapViewPoi(props) {
           position={[lat, lng]}
           eventHandlers={{
             click: (e) => {
-              console.log("marker clicked", e);
               setActivePoi(props.props);
-              console.log(activePoi);
             },
           }}
         />

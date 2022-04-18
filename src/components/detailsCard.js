@@ -19,7 +19,6 @@ const useStyles = makeStyles({
 });
 
 function DetailsCard(props) {
-  console.log(props);
   const classes = useStyles();
   const {
     uid,
@@ -111,7 +110,6 @@ function DetailsCard(props) {
 
   function handleDeleteTour(props) {
     const tourId = uid;
-    console.log(tourId);
 
     const tourRef = db.ref("tours");
     tourRef.once("value", (snap) => {
@@ -127,8 +125,7 @@ function DetailsCard(props) {
               .catch((error) => {
                 // Uh-oh, an error occurred!
               });
-            console.log(uid);
-            console.log(tours[uid]);
+
             db.ref(`/tours/${uid}`).remove();
             navigate("/tourlist");
           } else {
@@ -141,7 +138,6 @@ function DetailsCard(props) {
 
   function handleDeletePoi(props) {
     const poiId = uid;
-    console.log(poiId);
 
     const poiRef = db.ref("pois");
     poiRef.once("value", (snap) => {
@@ -151,25 +147,13 @@ function DetailsCard(props) {
           if (uid === poiId) {
             const imageRef = sRef(storage, pois[uid].image);
             deleteObject(imageRef)
-              .then(() => {
-                // File deleted successfully
-              })
-              .catch((error) => {
-                // Uh-oh, an error occurred!
-              });
+              .then(() => {})
+              .catch((error) => {});
             const recordingRef = sRef(storage, pois[uid].recording);
             deleteObject(recordingRef)
-              .then(() => {
-                // File deleted successfully
-              })
-              .catch((error) => {
-                // Uh-oh, an error occurred!
-              });
-            // The ID is the key
-            console.log(uid);
-            // The Object is foo[key]
-            console.log(pois[uid]);
-            //const tourPoiRef = db.ref(`tours/${uid}/pois`);
+              .then(() => {})
+              .catch((error) => {});
+
             db.ref(`/pois/${uid}`).remove();
             navigate("/poilist");
           } else {

@@ -16,10 +16,6 @@ const UpdatePoiPage = () => {
       if (pois !== null) {
         Object.keys(pois).forEach((uid) => {
           if (uid === poiId) {
-            // The ID is the key
-            console.log(uid);
-            // The Object is foo[key]
-            console.log(pois[uid]);
             setPoi(pois[uid]);
           }
         });

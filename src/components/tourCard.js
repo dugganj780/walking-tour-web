@@ -8,7 +8,6 @@ import Typography from "@mui/material/Typography";
 import { useNavigate, useParams } from "react-router-dom";
 import { db } from "../firebase";
 import { set, ref } from "firebase/database";
-//import Image from "../../public/images/home_image";
 
 export default function TourCard(props) {
   const { uid, title, owner, city, country, image, poi } = props.tour;
@@ -18,7 +17,6 @@ export default function TourCard(props) {
   const pois = [];
 
   useEffect(() => {
-    console.log(activeTour);
     if (!activeTour) {
       const tourRef = db.ref("tours");
       tourRef.on("value", (snap) => {
@@ -26,12 +24,7 @@ export default function TourCard(props) {
         if (tours !== null) {
           Object.keys(tours).forEach((uid) => {
             if (uid === tourId) {
-              // The ID is the key
-              console.log(uid);
-              // The Object is foo[key]
-              console.log(tours[uid]);
               setActiveTour(tours[uid]);
-              console.log(activeTour);
             }
           });
         }
@@ -75,12 +68,6 @@ export default function TourCard(props) {
     }
   }
 
-  function onDelete(id) {
-    if (window.confirm("Are you sure you want to Delete this?")) {
-      console.log(id);
-    }
-  }
-
   async function handleTourDetailsClick(props) {
     navigate(`/tour/${uid}`);
   }
@@ -91,7 +78,6 @@ export default function TourCard(props) {
 
   async function handleAddPoi(props) {
     const poiUid = uid;
-    console.log(poiUid);
 
     const tourRef = db.ref("tours");
     await tourRef.once("value", (snap) => {
@@ -99,11 +85,6 @@ export default function TourCard(props) {
       if (tours !== null) {
         Object.keys(tours).forEach((uid) => {
           if (uid === tourId) {
-            // The ID is the key
-            console.log(uid);
-            // The Object is foo[key]
-            console.log(tours[uid]);
-            //const tourPoiRef = db.ref(`tours/${uid}/pois`);
             set(ref(db, `tours/${uid}/pois/${poiUid}`), { poiUid });
           }
         });
@@ -118,10 +99,6 @@ export default function TourCard(props) {
       if (tours !== null) {
         Object.keys(tours).forEach((uid) => {
           if (uid === tourId) {
-            // The ID is the key
-            console.log(uid);
-            // The Object is foo[key]
-            console.log(tours[uid]);
             set(ref(db, `/tours/${uid}`), {
               uid: activeTour.uid,
               title: activeTour.title,
